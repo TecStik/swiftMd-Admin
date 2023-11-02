@@ -1,0 +1,39 @@
+.container{
+    width: 100%;
+    background-color: #6DAABC;
+    height: 100vh;
+    padding-top: 30px;
+}
+
+.heading {
+    text-align: center;
+    /* padding: 10px 0px; */
+    font-size: 1.8rem;
+    color: #FFFFFF;
+}
+
+
+.table {
+    width: 90%;
+    margin: auto;
+    margin-top: 30px;
+}
+
+/* 
+.tbody{
+  width: 100%;
+} */
+
+tr {
+    text-align: center;
+}
+
+td {
+    padding: 13px 0px;
+   border-bottom: 1px solid;
+}
+
+.thead_bg{
+    background-color: #D9D9D9;
+    height: 50px;
+}

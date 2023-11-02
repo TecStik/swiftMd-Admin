@@ -1,0 +1,42 @@
+.LayoutContainer {
+    background-color: #117692;
+    height: 100vh;
+    width: 17vw;
+}
+
+.mainLayout ul {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 25px;
+    padding-left: 20px;
+    list-style-type: none;
+    padding-top: 15px;
+}
+
+.mainLayout ul li {
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+
+
+.right_content {
+    flex: 6;
+    /* background-color: red; */
+    padding: 20px;
+}
+
+.left_content {
+    flex: 1;
+    padding: 20px;
+    background-color: #117692;
+    height: 120vh;
+}
+
+.app {
+    display: flex;
+    justify-content: space-between;
+}

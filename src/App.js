@@ -1,0 +1,48 @@
+import React from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
+import Navbar from './Components/Navbar/Navbar';
+import Left from "./Components/Layout/Left";
+import RightLayoutContent from './Components/Layout/RightLayoutContent';
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import LayoutStyle from "./Components/Layout/Layout.module.css";
+import Appointment from './Pages/Appointment/Appointment';
+import AddMember from "./Pages/AddMember/AddMember";
+import AddClinic from './Pages/AddClinic/AddClinic';
+import MemberInformation from './Pages/MemberInformation/MemberInformation';
+import PatientRegisteration from "./Pages/PatientRegisteration/PatientRegisteration";
+import PatientDetail from "./Pages/PatientDetails/PatientDetails";
+import IssueInformation from './Pages/IssueAppoinment/IssueInformation';
+import Information from './Pages/ClinicInformation/Information';
+import InformationEdit from './Pages/ClinicInformation/InformationEdit';
+import MemberUpdate from "./Pages/MemberInformation/MemberUpdate";
+
+
+function App() {
+  return (
+    <ChakraProvider>
+      <Router>
+        <Navbar />
+        <div className={LayoutStyle.app}>
+          <Left />
+          <RightLayoutContent>
+            <Routes>
+              <Route path="/appointment" element={<Appointment />} />
+              <Route path="/add-member" element={<AddMember />} />
+              <Route path="/add-clinic" element={<AddClinic />} />
+              <Route path="/clinic-information" element={<Information />} />
+              <Route path="/member-information" element={<MemberInformation />} />
+              <Route path="/member-information/:id" element={<MemberUpdate />} />
+              <Route path="/patient-registeration" element={<PatientRegisteration />} />
+              <Route path="/patient-detail" element={<PatientDetail />} />
+              <Route path="/issue-information" element={<IssueInformation />} />
+              <Route path="/clinic-information/:id" element={<InformationEdit />} />
+            </Routes>
+          </RightLayoutContent>
+        </div>
+      </Router>
+
+    </ChakraProvider>
+  );
+}
+
+export  {App};

@@ -1,0 +1,30 @@
+[
+    {
+        "id":1,
+        "name":"Mr. Kashif",
+        "email":"Kashif88@gmail.com",
+        "phonenumber":"03251232922",
+        "role":"Admin"
+    },
+    {
+        "id":2,
+        "name":"Mr. Kashif",
+        "email":"Kashif88@gmail.com",
+        "phonenumber":"03251232922",
+        "role":"Admin"
+    },
+    {
+        "id":3,
+        "name":"Mr. Kashif",
+        "email":"Kashif88@gmail.com",
+        "phonenumber":"03251232922",
+        "role":"Admin"
+    },
+    {
+        "id":4,
+        "name":"Mr. Kashif",
+        "email":"Kashif88@gmail.com",
+        "phonenumber":"03251232922",
+        "role":"Admin"
+    }
+]

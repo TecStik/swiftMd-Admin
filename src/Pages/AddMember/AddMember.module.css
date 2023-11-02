@@ -1,0 +1,76 @@
+.container {
+    width: 100%;
+    background-color: #6DAABC;
+    height: 100vh;
+    padding: 30px 0px;
+}
+
+/* heading */
+
+.heading {
+    text-align: center;
+    /* padding: 10px 0px; */
+    font-size: 1.8rem;
+    color: #FFFFFF;
+}
+
+.formContainer form {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: auto;
+}
+
+.formContainer form input::placeholder{
+    padding: 0px 10px;
+}
+
+
+/* .formContainer form button {
+    background-color: #117692;
+    margin: 10px 0px;
+    color: #fff;
+    font-size: 1.3rem;
+    padding: 10px;
+    border-radius: 20px;
+} */
+
+
+.btn{
+    width: 30%;
+    background-color: #117692;
+    padding: 10px;
+    border-radius: 50px;
+    margin: auto;
+    margin-top: 20px;
+    color: #fff;
+}
+
+.formContainer form input {
+    background-color: #E5E5E5;
+    outline: none;
+    border-radius: 10px;
+    padding: 5px 0px;
+    margin: 5px 0px;
+}
+
+.formContainer form select {
+    background-color: #E5E5E5;
+    outline: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.formContainer label {
+    text-align: left;
+    margin: 5px 0px;
+}
+
+
+.formContainer select {
+    background-color: transparent;
+}
+
+.error{
+    color: red;
+}
