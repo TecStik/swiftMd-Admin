@@ -8,7 +8,7 @@ import { App } from './App';
 const theme = createTheme({
   typography: {
     body2: {
-      // Define your typography settings here
+      // Define your typography settings here.
     },
   },
 });
