@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ClinicData from "./ClinicInformation.json";
 import ClinicStyle from "./Clinic.module.css";
 import { FiEdit } from "react-icons/fi";
 import PaginationComponent from '../../Components/Pagination';
-import { Link } from "react-router-dom";
+import axios from 'axios';
 // chakra ui model import here
 import {
   Modal,
@@ -19,6 +19,11 @@ import {
   Input,
   Button,
 } from '@chakra-ui/react'
+import { Url } from '../../Components/core';
+import moment from 'moment';
+import { CircularProgress } from "@mui/material";
+
+
 
 
 
@@ -30,13 +35,31 @@ const Information = () => {
 
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
+  const [loading, setLoading] = useState(true)
 
-
-  const [data, setDat] = useState(ClinicData);
+  const [data, setData] = useState([]);
 
   const [page, setPage] = useState(1);
   const totalPages = Math.ceil(data.length / itemsPerPage);
   console.log(data)
+
+
+  useEffect(() => {
+    axios({
+      method: "post",
+      url: Url + "/filteredClinic",
+      data: {
+        "filter": {}
+      }
+    }).then((res) => {
+      console.log("clinic information", res?.data);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+      setData(res?.data)
+    }).catch(err => console.log(err?.message))
+  }, [])
+
 
 
   // pagination handle function
@@ -59,29 +82,40 @@ const Information = () => {
       <table className={ClinicStyle.table}>
         <thead className={ClinicStyle.thead_bg}>
           <tr className={ClinicStyle.thead_bg}>
-            <th>Clinic Name</th>
-            <th>Short Code</th>
-            <th>Address</th>
-            <th>Start Time</th>
-            <th>End Time</th>
+            <th>ClinicId</th>
+            <th>ClinicDoctorName</th>
+            <th>ClinicLocation</th>
+            <th>ClinicStartingTime</th>
+            <th>ClinicEndTime</th>
             <th></th>
           </tr>
         </thead>
 
         <tbody>
           {
-            displayedData && displayedData?.map((elm) => (
-              <tr key={elm?.id}>
-                <td>{elm?.clinicname}</td>
-                <td>{elm?.shortcode}</td>
-                <td>{elm?.address}</td>
-                <td>{elm?.starttime}</td>
-                <td>{elm?.endtime}</td>
-                <td onClick={onOpen}>
-                  <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} />
-                </td>
-              </tr>
-            ))
+
+            loading ?
+              <div style={{display:"flex",justifyContent:"center",alignItems:"center",margin:'auto'}}>
+                <CircularProgress />
+              </div>
+
+              :
+
+              displayedData && displayedData?.map((elm) => (
+                <tr key={elm?._id}>
+                  <td>{elm?.ClinicId}</td>
+                  <td>{elm?.ClinicDoctorName}</td>
+                  <td>{elm?.ClinicLocation}</td>
+
+                  <td>{moment(elm?.ClinicStartingTime).format("llll")}</td>
+                  <td>{moment(elm?.ClinicEndTime).format("llll")}</td>
+                  <td onClick={onOpen}>
+                    <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} />
+                  </td>
+                </tr>
+
+
+              ))
           }
         </tbody>
       </table>
@@ -102,28 +136,28 @@ const Information = () => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
-              <FormLabel>Clinic Name</FormLabel>
-              <Input ref={initialRef} placeholder='Clinic Name' />
+              <FormLabel>Clinic Id</FormLabel>
+              <Input ref={initialRef} placeholder='Clinic Id' />
             </FormControl>
 
             <FormControl mt={4}>
-              <FormLabel>Short Code</FormLabel>
-              <Input placeholder='Short Code' />
+              <FormLabel>Clinic Doctar Name</FormLabel>
+              <Input placeholder='Clinic Doctar Name' />
             </FormControl>
 
             <FormControl mt={4}>
-              <FormLabel>Address</FormLabel>
-              <Input placeholder='Address' />
+              <FormLabel>Clinic Location</FormLabel>
+              <Input placeholder='Clinic Location' />
             </FormControl>
 
             <FormControl mt={4}>
-              <FormLabel>Start Time</FormLabel>
-              <Input placeholder='Start Time' type='date'/>
+              <FormLabel>Clinic Starting Time</FormLabel>
+              <Input placeholder='Clinic Starting Time' type='date' />
             </FormControl>
 
             <FormControl mt={4}>
-              <FormLabel>End Time</FormLabel>
-              <Input placeholder='End Time' type='date'/>
+              <FormLabel>Clinic End Time</FormLabel>
+              <Input placeholder='Clinic End Time' type='date' />
             </FormControl>
           </ModalBody>
 

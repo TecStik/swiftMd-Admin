@@ -7,6 +7,7 @@ import dateImg from "./images/date.png";
 import doctornameImg from "./images/menname.png";
 import { CircularProgress } from "@mui/material";
 import moment from "moment";
+import { Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
 
 const itemsPerPage = 4;  //pagination limit here
 
@@ -42,37 +43,39 @@ const UseableComponentbackground = ({ data, title, loading }) => {
             FILTER
           </div>
 
-          <table className={UseableStyle.table}>
-            <thead className={UseableStyle.thead_bg}>
-              <tr className={UseableStyle.thead_bg}>
-                <th>Appointment</th>
-                <th>AppointmentMRNum</th>
-                <th>Name</th>
-                <th>Time</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody className={UseableStyle.tbody}>
-              {
-                displayedData?.map((elm) => (
-                  <tr key={elm?._id}>
-                    <td>{elm?.Appointment}</td>
-                    <td>{elm?.AppointmentMRNum}</td>
-                    <td>
-                      {elm?.AppointmentName}
+          <TableContainer>
+            <Table variant='striped' colorScheme='teal'>
+              <Thead>
+                <Tr>
+                  <Th>Appointment</Th>
+                  <Th>AppointmentMRNum</Th>
+                  <Th>Name</Th>
+                  <Th>Time</Th>
+                  <Th>Status</Th>
+                </Tr>
+              </Thead>
+              <Tbody >
+                {
+                  displayedData?.map((elm) => (
+                    <Tr key={elm?._id}>
+                      <Td>{elm?.Appointment}</Td>
+                      <Td>{elm?.AppointmentMRNum}</Td>
+                      <Td>
+                        {elm?.AppointmentName}
 
-                    </td>
-                    <td>
-                      {moment(elm?.createdOn).format("llll")}
-                    </td>
-                    <td>
-                      {elm?.Status}
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
+                      </Td>
+                      <Td>
+                        {moment(elm?.createdOn).format("llll")}
+                      </Td>
+                      <Td>
+                        {elm?.Status}
+                      </Td>
+                    </Tr>
+                  ))
+                }
+              </Tbody>
+            </Table>
+          </TableContainer>
 
           {/* add pagination here */}
           <div className={UseableStyle.pagination_container}>
