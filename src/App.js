@@ -13,8 +13,6 @@ import PatientRegisteration from "./Pages/PatientRegisteration/PatientRegisterat
 import PatientDetail from "./Pages/PatientDetails/PatientDetails";
 import IssueInformation from './Pages/IssueAppoinment/IssueInformation';
 import Information from './Pages/ClinicInformation/Information';
-import InformationEdit from './Pages/ClinicInformation/InformationEdit';
-import MemberUpdate from "./Pages/MemberInformation/MemberUpdate";
 
 
 function App() {
@@ -31,11 +29,9 @@ function App() {
               <Route path="/add-clinic" element={<AddClinic />} />
               <Route path="/clinic-information" element={<Information />} />
               <Route path="/member-information" element={<MemberInformation />} />
-              <Route path="/member-information/:id" element={<MemberUpdate />} />
               <Route path="/patient-registeration" element={<PatientRegisteration />} />
               <Route path="/patient-detail" element={<PatientDetail />} />
               <Route path="/issue-information" element={<IssueInformation />} />
-              <Route path="/clinic-information/:id" element={<InformationEdit />} />
             </Routes>
           </RightLayoutContent>
         </div>
@@ -45,4 +41,4 @@ function App() {
   );
 }
 
-export  {App};
+export { App };

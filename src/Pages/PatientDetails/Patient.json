@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "name": "Mr. Kashif",
+        "Phone": "03251232922",
+        "MRN": "921551",
+        "Address": "569 St Ave CA Karachi",
+        "Email": "Kashif88@.com"
+    },
+    {
+        "id": 2,
+        "name": "Mr. Kashif",
+        "Phone": "03251232922",
+        "MRN": "921551",
+        "Address": "569 St Ave CA Karachi",
+        "Email": "Kashif88@.com"
+    },
+    {
+        "id": 3,
+        "name": "Mr. Kashif",
+        "Phone": "03251232922",
+        "MRN": "921551",
+        "Address": "569 St Ave CA Karachi",
+        "Email": "Kashif88@.com"
+    },
+    {
+        "id": 4,
+        "name": "Mr. Kashif",
+        "Phone": "03251232922",
+        "MRN": "921551",
+        "Address": "569 St Ave CA Karachi",
+        "Email": "Kashif88@.com"
+    }
+]

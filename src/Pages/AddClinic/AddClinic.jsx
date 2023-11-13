@@ -2,6 +2,7 @@ import React from 'react';
 import AddClinicStyle from "./AddClinic.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 
 
 // Form Schema
@@ -49,14 +50,14 @@ const AddClinic = () => {
         <form onSubmit={formik.handleSubmit}>
           <div>
             <label>Name Of Clinic</label>
-            <input placeholder='Liaquat Nationl' value={formik.values.clinicname} onChange={formik.handleChange("clinicname")} onBlur={formik.handleBlur("clinicname")} name='clinicname' id='clinicname' />
+            <Input placeholder='Liaquat Nationl' value={formik.values.clinicname} onChange={formik.handleChange("clinicname")} onBlur={formik.handleBlur("clinicname")} name='clinicname' id='clinicname' />
             <div className={AddClinicStyle.error}>
               {formik?.touched?.clinicname && formik?.errors?.clinicname}
             </div>
           </div>
           <div>
             <label>Short code</label>
-            <input type="text" placeholder='LNH' value={formik.values.shortcode} onChange={formik.handleChange("shortcode")} onBlur={formik.handleBlur("shortcode")} name='shortcode' id='shortcode' />
+            <Input type="text" placeholder='LNH' value={formik.values.shortcode} onChange={formik.handleChange("shortcode")} onBlur={formik.handleBlur("shortcode")} name='shortcode' id='shortcode' />
             <div className={AddClinicStyle.error}>
               {formik?.touched?.shortcode && formik?.errors?.shortcode}
             </div>
@@ -64,14 +65,14 @@ const AddClinic = () => {
           <div className={AddClinicStyle.main__start_time_container}>
             <div>
               <label>Start time</label>
-              <input placeholder='Start Time' type="text" value={formik.values.starttime} onChange={formik.handleChange("starttime")} onBlur={formik.handleBlur("starttime")} name='starttime' id='starttime' />
+              <Input placeholder='Start Time' type="date" value={formik.values.starttime} onChange={formik.handleChange("starttime")} onBlur={formik.handleBlur("starttime")} name='starttime' id='starttime' />
               <div className={AddClinicStyle.error}>
                 {formik?.touched?.starttime && formik?.errors?.starttime}
               </div>
             </div>
             <div>
               <label>End time</label>
-              <input placeholder='End Time' type="text" value={formik.values.endtime} onChange={formik.handleChange("endtime")} onBlur={formik.handleBlur("endtime")} name='endtime' id='endtime' />
+              <Input placeholder='End Time' type="date" value={formik.values.endtime} onChange={formik.handleChange("endtime")} onBlur={formik.handleBlur("endtime")} name='endtime' id='endtime' />
               <div className={AddClinicStyle.error}>
                 {formik?.touched?.endtime && formik?.errors?.endtime}
               </div>

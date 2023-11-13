@@ -32,16 +32,16 @@ const UseableComponentbackground = ({ data, title, loading }) => {
 
 
   return (
-    <div className={UseableStyle.container}>
-      <h2>{title}</h2>
-      <div className={UseableStyle.filterbtn}>
-        FILTER
-      </div>
-
+    <>
       {
         loading ? <div style={{ display: 'flex', justifyContent: "center", alignItems: "center", padding: '30px 0px' }}>
           <CircularProgress />
-        </div> : <>
+        </div> : <div className={UseableStyle.container}>
+          <h2>{title}</h2>
+          <div className={UseableStyle.filterbtn}>
+            FILTER
+          </div>
+
           <table className={UseableStyle.table}>
             <thead className={UseableStyle.thead_bg}>
               <tr className={UseableStyle.thead_bg}>
@@ -84,10 +84,11 @@ const UseableComponentbackground = ({ data, title, loading }) => {
               color='primary'
             />
           </div>
-
-        </>
+        </div>
       }
-    </div>
+
+    </>
+
   )
 }
 

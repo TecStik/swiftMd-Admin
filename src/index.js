@@ -4,11 +4,13 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { App } from './App';
+import { ChakraProvider } from '@chakra-ui/react'
+
 
 const theme = createTheme({
   typography: {
     body2: {
-      // Define your typography settings here.
+      // Define your typography settings here
     },
   },
 });
@@ -17,7 +19,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <App />
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

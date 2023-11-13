@@ -27,13 +27,13 @@
     flex: 6;
     /* background-color: red; */
     padding: 20px;
+    margin: auto;
 }
 
 .left_content {
     flex: 1;
     padding: 20px;
     background-color: #117692;
-    height: 120vh;
 }
 
 .app {

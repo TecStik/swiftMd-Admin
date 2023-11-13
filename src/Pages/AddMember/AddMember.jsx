@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Url } from '../../Components/core';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
+import { Input, FormControl, FormLabel, Select } from "@chakra-ui/react";
+
 
 
 // Form Schema
@@ -49,26 +51,26 @@ const AddMember = () => {
       <div className={AddMemberStyle.formContainer}>
         <form onSubmit={formik.handleSubmit}>
           <label>User Name</label>
-          <input type="text" placeholder='User Name' value={formik.values.username} onChange={formik.handleChange("username")} onBlur={formik.handleBlur("username")} name='username' id='username' />
+          <Input type="text" placeholder='User Name' value={formik.values.username} onChange={formik.handleChange("username")} onBlur={formik.handleBlur("username")} name='username' id='username' />
           <div className={AddMemberStyle.error}>
             {formik?.touched?.username && formik?.errors?.username}
           </div>
           <label>Email</label>
-          <input type="email" placeholder='Email' value={formik.values.email} onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")} name='email' id='email' />
+          <Input type="email" placeholder='Email' value={formik.values.email} onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")} name='email' id='email' />
           <div className={AddMemberStyle.error}>
             {formik?.touched?.email && formik?.errors?.email}
           </div>
           <label>Password New</label>
-          <input type="password" placeholder='Password New' value={formik.values.password} onChange={formik.handleChange("password")} onBlur={formik.handleBlur("password")} name='password' id='password' />
+          <Input type="password" placeholder='Password New' value={formik.values.password} onChange={formik.handleChange("password")} onBlur={formik.handleBlur("password")} name='password' id='password' />
           <div className={AddMemberStyle.error}>
             {formik?.touched?.password && formik?.errors?.password}
           </div>
           <label>Role</label>
-          <select value={formik.values.role} onChange={formik.handleChange("role")} onBlur={formik.handleBlur("role")} name='role' id='role'>
+          <Select value={formik.values.role} onChange={formik.handleChange("role")} onBlur={formik.handleBlur("role")} name='role' id='role'>
             <option value="admin">Admin</option>
             <option value="cashier">Cashier</option>
             <option value="assistant">Assistant</option>
-          </select>
+          </Select>
           <div className={AddMemberStyle.error}>
             {formik?.touched?.role && formik?.errors?.role}
           </div>
