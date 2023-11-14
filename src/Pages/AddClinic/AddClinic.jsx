@@ -2,7 +2,7 @@ import React from 'react';
 import AddClinicStyle from "./AddClinic.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+import {  Input } from "@chakra-ui/react";
 
 
 // Form Schema

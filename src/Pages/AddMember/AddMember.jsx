@@ -55,22 +55,23 @@ const AddMember = () => {
       </div>
       <div className={AddMemberStyle.formContainer}>
         <form onSubmit={formik.handleSubmit}>
-          <label>User Name</label>
-          <Input type="text" placeholder='User Name' value={formik.values.username} onChange={formik.handleChange("username")} onBlur={formik.handleBlur("username")} name='username' id='username' />
+          <label style={{fontWeight:"600"}}>User Name</label>
+          <Input className={AddMemberStyle.input} type="text" placeholder='User Name' value={formik.values.username} onChange={formik.handleChange("username")} onBlur={formik.handleBlur("username")} name='username' id='username' />
           <div className={AddMemberStyle.error}>
             {formik?.touched?.username && formik?.errors?.username}
           </div>
-          <label>Email</label>
-          <Input type="email" placeholder='Email' value={formik.values.email} onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")} name='email' id='email' />
+          <label style={{fontWeight:"600"}}>Email</label>
+          <Input className={AddMemberStyle.input} type="email" placeholder='Email' value={formik.values.email} onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")} name='email' id='email' />
           <div className={AddMemberStyle.error}>
             {formik?.touched?.email && formik?.errors?.email}
           </div>
-          <label>Password New</label>
+          <label style={{fontWeight:"600"}}>Password New</label>
           <InputGroup size='md'>
             <Input
               pr='4.5rem'
               type={show ? 'text' : 'password'}
               placeholder='Password New' value={formik.values.password} onChange={formik.handleChange("password")} onBlur={formik.handleBlur("password")} name='password' id='password'
+              className={AddMemberStyle.input}
             />
             <InputRightElement width='4.5rem' className={AddMemberStyle.right}>
               <Button h='1.75rem' size='sm' onClick={handleClick} className={AddMemberStyle.btn1}>
@@ -81,8 +82,8 @@ const AddMember = () => {
           <div className={AddMemberStyle.error}>
               {formik?.touched?.password && formik?.errors?.password}
             </div>
-          <label>Role</label>
-          <Select value={formik.values.role} onChange={formik.handleChange("role")} onBlur={formik.handleBlur("role")} name='role' id='role'>
+          <label style={{fontWeight:"600"}}>Role</label>
+          <Select className={AddMemberStyle.input} value={formik.values.role} onChange={formik.handleChange("role")} onBlur={formik.handleBlur("role")} name='role' id='role'>
             <option value="admin">Admin</option>
             <option value="cashier">Cashier</option>
             <option value="assistant">Assistant</option>

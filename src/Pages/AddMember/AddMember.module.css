@@ -76,6 +76,10 @@
 }
 
 
+.input{
+    padding: 0px 5px !important;
+}
+
 
 .btn1 {
     background: transparent !important;
