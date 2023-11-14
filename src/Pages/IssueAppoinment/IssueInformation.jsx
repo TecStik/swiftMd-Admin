@@ -45,7 +45,7 @@ const IssueInformation = () => {
         <form onSubmit={formik.handleSubmit}>
           <FormControl>
             <FormLabel>Name</FormLabel>
-            <Input type="text" placeholder='Name' value={formik.values.name} onChange={formik.handleChange("name")} onBlur={formik.handleBlur("name")} name='name' id='name' />
+            <Input type="text" placeholder='Name' value={formik.values.name} onChange={formik.handleChange("name")} onBlur={formik.handleBlur("name")} name='name' id='name' className={AddMemberStyle.input}/>
           </FormControl>
 
           <div className={AddMemberStyle.error}>
@@ -53,7 +53,7 @@ const IssueInformation = () => {
           </div>
           <FormControl mt={4}>
             <FormLabel>Time</FormLabel>
-            <Input type="date" placeholder='Date' value={formik.values.time} onChange={formik.handleChange("time")} onBlur={formik.handleBlur("time")} name='time' id='time' className={AddMemberStyle.dateInput} />
+            <Input type="date" placeholder='Date' value={formik.values.time} onChange={formik.handleChange("time")} onBlur={formik.handleBlur("time")} name='time' id='time' className={AddMemberStyle.input} />
           </FormControl>
           <div className={AddMemberStyle.error}>
             {formik?.touched?.time && formik?.errors?.time}
