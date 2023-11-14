@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ClinicData from "./ClinicInformation.json";
+// import ClinicData from "./ClinicInformation.json";
 import ClinicStyle from "./Clinic.module.css";
 import { FiEdit } from "react-icons/fi";
 import PaginationComponent from '../../Components/Pagination';
@@ -22,6 +22,19 @@ import {
 import { Url } from '../../Components/core';
 import moment from 'moment';
 import { CircularProgress } from "@mui/material";
+import { useFormik } from 'formik';
+import * as Yup from "yup";
+
+
+// Form Schema
+
+const FormSchema = Yup.object({
+  clinicid: Yup.string().required("Clinic Id is Required"),
+  clinicdoctarname: Yup.string().required("Clinic Doctar Name is Required"),
+  cliniclocation: Yup.string().required("Clinic Location is Required"),
+  clinicstarttime: Yup.string().required("Clinic Start time is Required"),
+  clinicendtime: Yup.string().required("Clinic End time is Required"),
+});
 
 
 
@@ -42,6 +55,32 @@ const Information = () => {
   const [page, setPage] = useState(1);
   const totalPages = Math.ceil(data.length / itemsPerPage);
   console.log(data)
+
+
+  const formik = useFormik({
+    initialValues: {
+      clinicid: "",
+      clinicdoctarname: "",
+      cliniclocation: "",
+      clinicstarttime: "",
+      clinicendtime: ""
+    },
+    onSubmit: (values) => {
+      // dispatch the action
+      const data = {
+        clinicid: values?.clinicid,
+        clinicdoctarname: values?.clinicdoctarname,
+        cliniclocation: values?.cliniclocation,
+        clinicstarttime: values?.clinicstarttime,
+        clinicendtime: values?.clinicendtime,
+      };
+      // dispatch(createPostAction(data));
+      console.log(data)
+
+    },
+    validationSchema: FormSchema,
+  });
+
 
 
   useEffect(() => {
@@ -134,32 +173,49 @@ const Information = () => {
               <ModalBody pb={6}>
                 <FormControl>
                   <FormLabel>Clinic Id</FormLabel>
-                  <Input ref={initialRef} placeholder='Clinic Id' />
+                  <Input ref={initialRef} placeholder='Clinic Id' name='clinicid' value={formik.values.clinicid} onChange={formik.handleChange("clinicid")} onBlur={formik.handleBlur("clinicid")} />
                 </FormControl>
+
+                <div className={ClinicStyle.error}>
+                  {formik.touched.clinicid && formik.errors.clinicid}
+                </div>
 
                 <FormControl mt={4}>
                   <FormLabel>Clinic Doctar Name</FormLabel>
-                  <Input placeholder='Clinic Doctar Name' />
+                  <Input placeholder='Clinic Doctar Name' name='clinicdoctarname' value={formik.values.clinicdoctarname} onChange={formik.handleChange("clinicdoctarname")} onBlur={formik.handleBlur("clinicdoctarname")} />
                 </FormControl>
 
+                <div className={ClinicStyle.error}>
+                  {formik.touched.clinicdoctarname && formik.errors.clinicdoctarname}
+                </div>
                 <FormControl mt={4}>
                   <FormLabel>Clinic Location</FormLabel>
-                  <Input placeholder='Clinic Location' />
+                  <Input placeholder='Clinic Location' name='cliniclocation' value={formik.values.cliniclocation} onChange={formik.handleChange("cliniclocation")} onBlur={formik.handleBlur("cliniclocation")} />
                 </FormControl>
+
+                <div className={ClinicStyle.error}>
+                  {formik.touched.cliniclocation && formik.errors.cliniclocation}
+                </div>
 
                 <FormControl mt={4}>
                   <FormLabel>Clinic Starting Time</FormLabel>
-                  <Input placeholder='Clinic Starting Time' type='date' />
+                  <Input placeholder='Clinic Starting Time' type='date' name='clinicstarttime' value={formik.values.clinicstarttime} onChange={formik.handleChange("clinicstarttime")} onBlur={formik.handleBlur("clinicstarttime")} />
                 </FormControl>
 
+                <div className={ClinicStyle.error}>
+                  {formik.touched.clinicstarttime && formik.errors.clinicstarttime}
+                </div>
                 <FormControl mt={4}>
                   <FormLabel>Clinic End Time</FormLabel>
-                  <Input placeholder='Clinic End Time' type='date' />
+                  <Input placeholder='Clinic End Time' type='date' name='clinicendtime' value={formik.values.clinicendtime} onChange={formik.handleChange("clinicendtime")} onBlur={formik.handleBlur("clinicendtime")} />
                 </FormControl>
+                <div className={ClinicStyle.error}>
+                  {formik.touched.clinicendtime && formik.errors.clinicendtime}
+                </div>
               </ModalBody>
 
               <ModalFooter>
-                <Button colorScheme='blue' mr={3}>
+                <Button colorScheme='blue' mr={3} onClick={formik.handleSubmit}>
                   Update
                 </Button>
                 <Button onClick={onClose}>Cancel</Button>
