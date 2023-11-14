@@ -1,7 +1,7 @@
 .container {
     width: 100%;
     background-color: #6DAABC;
-    height: 100vh;
+    height: auto;
 }
 
 .heading{
@@ -47,14 +47,12 @@
 
 
 .btn{
-    width: 30% !important;
+    background-color: #117692 !important;
+    color: #fff !important;
+    width: 30%;
     margin: auto;
-    position: relative;
-    top: 30px;
-    background-color: #117692;
-    color: #fff;
-    font-size: 1.5rem;
-    cursor: pointer;
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
 
 .error{
