@@ -21,7 +21,7 @@
     margin: auto;
 }
 
-.formContainer form input::placeholder{
+.formContainer form input::placeholder {
     padding: 0px 10px;
 }
 
@@ -36,7 +36,7 @@
 } */
 
 
-.btn{
+.btn {
     width: 30%;
     background-color: #117692;
     padding: 10px;
@@ -71,6 +71,20 @@
     background-color: transparent;
 }
 
-.error{
+.error {
     color: red;
+}
+
+
+
+.btn1 {
+    background: transparent !important;
+    position: relative;
+    top: 5px;
+}
+
+
+.right {
+    /* position: relative; */
+    /* top: 20px; */
 }

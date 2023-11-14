@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AddMemberStyle from "./AddMember.module.css";
 import axios from 'axios';
 import { Url } from '../../Components/core';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
-import { Input, FormControl, FormLabel, Select } from "@chakra-ui/react";
-
+import { Input, Select, InputGroup, InputRightElement, Button } from "@chakra-ui/react";
+import { BiSolidHide, BiSolidShow } from "react-icons/bi"
 
 
 // Form Schema
@@ -20,6 +20,7 @@ const FormSchema = Yup.object({
 
 
 const AddMember = () => {
+  const [show, setShow] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -43,6 +44,10 @@ const AddMember = () => {
     validationSchema: FormSchema,
   });
 
+  const handleClick = () => {
+    setShow(!show)
+  }
+
   return (
     <div className={AddMemberStyle.container}>
       <div className={AddMemberStyle.heading}>
@@ -61,10 +66,21 @@ const AddMember = () => {
             {formik?.touched?.email && formik?.errors?.email}
           </div>
           <label>Password New</label>
-          <Input type="password" placeholder='Password New' value={formik.values.password} onChange={formik.handleChange("password")} onBlur={formik.handleBlur("password")} name='password' id='password' />
+          <InputGroup size='md'>
+            <Input
+              pr='4.5rem'
+              type={show ? 'text' : 'password'}
+              placeholder='Password New' value={formik.values.password} onChange={formik.handleChange("password")} onBlur={formik.handleBlur("password")} name='password' id='password'
+            />
+            <InputRightElement width='4.5rem' className={AddMemberStyle.right}>
+              <Button h='1.75rem' size='sm' onClick={handleClick} className={AddMemberStyle.btn1}>
+                {show ? <BiSolidHide style={{ fontSize: '1.2rem' }} /> : <BiSolidShow style={{ fontSize: '1.2rem' }} />}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
           <div className={AddMemberStyle.error}>
-            {formik?.touched?.password && formik?.errors?.password}
-          </div>
+              {formik?.touched?.password && formik?.errors?.password}
+            </div>
           <label>Role</label>
           <Select value={formik.values.role} onChange={formik.handleChange("role")} onBlur={formik.handleBlur("role")} name='role' id='role'>
             <option value="admin">Admin</option>
