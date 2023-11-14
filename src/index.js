@@ -5,6 +5,8 @@ import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { App } from './App';
 import { ChakraProvider,extendTheme  } from '@chakra-ui/react'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const theme = createTheme({
@@ -22,6 +24,7 @@ root.render(
     <ThemeProvider theme={theme}>
       <ChakraProvider >
         <App />
+        <ToastContainer/>
       </ChakraProvider>
     </ThemeProvider>
   </React.StrictMode>

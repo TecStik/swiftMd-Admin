@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import Navbar from './Components/Navbar/Navbar';
 import Left from "./Components/Layout/Left";
@@ -13,29 +13,43 @@ import PatientRegisteration from "./Pages/PatientRegisteration/PatientRegisterat
 import PatientDetail from "./Pages/PatientDetails/PatientDetails";
 import IssueInformation from './Pages/IssueAppoinment/IssueInformation';
 import Information from './Pages/ClinicInformation/Information';
+import Login from './Pages/Auth/Login';
+import { StoreProvider } from './ContextApi';
 
 
 function App() {
+  const [userData, setUserData] = useState(null);
+  console.log(userData)
   return (
     <ChakraProvider>
-      <Router>
-        <Navbar />
-        <div className={LayoutStyle.app}>
-          <Left />
-          <RightLayoutContent>
-            <Routes>
-              <Route path="/appointment" element={<Appointment />} />
-              <Route path="/add-member" element={<AddMember />} />
-              <Route path="/add-clinic" element={<AddClinic />} />
-              <Route path="/clinic-information" element={<Information />} />
-              <Route path="/member-information" element={<MemberInformation />} />
-              <Route path="/patient-registeration" element={<PatientRegisteration />} />
-              <Route path="/patient-detail" element={<PatientDetail />} />
-              <Route path="/issue-information" element={<IssueInformation />} />
-            </Routes>
-          </RightLayoutContent>
-        </div>
-      </Router>
+      <StoreProvider value={{ userData, setUserData }}>
+        <Router>
+          {
+            userData ? <>
+              <Navbar />
+              <div className={LayoutStyle.app}>
+                <Left />
+                <RightLayoutContent>
+                  <Routes>
+                    <Route path="/appointment" element={<Appointment />} />
+                    <Route path="/add-member" element={<AddMember />} />
+                    <Route path="/add-clinic" element={<AddClinic />} />
+                    <Route path="/clinic-information" element={<Information />} />
+                    <Route path="/member-information" element={<MemberInformation />} />
+                    <Route path="/patient-registeration" element={<PatientRegisteration />} />
+                    <Route path="/patient-detail" element={<PatientDetail />} />
+                    <Route path="/issue-information" element={<IssueInformation />} />
+                  </Routes>
+                </RightLayoutContent>
+              </div>
+            </> : <>
+              <Routes>
+                <Route path='/' element={<Login />} />
+              </Routes>
+            </>
+          }
+        </Router>
+      </StoreProvider>
 
     </ChakraProvider>
   );

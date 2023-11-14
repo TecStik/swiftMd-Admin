@@ -1,0 +1,53 @@
+.container {
+    border: 1px solid lightgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px 20px;
+}
+
+
+.input {
+    width: 100%;
+}
+
+.mainContainer {
+    width: 45%;
+    margin: auto;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.label {
+    width: 100%;
+    padding: 10px 0px;
+}
+
+.btn{
+    background-color: transparent !important;
+}
+
+.btnlogin{
+    background-color: #117692 !important;
+    color: #fff !important;
+    margin: 20px 0px;
+}
+
+.btnlogin:hover{
+    background-color: #117692 !important;
+}
+
+.heading{
+    font-size: 2rem;
+    padding: 20px 0px;
+}
+
+.error{
+    color: red !important;
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 5px;
+}

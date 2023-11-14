@@ -15,6 +15,7 @@ const Layout = () => {
           <li><Link to="/patient-registeration">Patient Registeration</Link></li>
           <li><Link to="/patient-detail"> Patient details</Link></li>
           <li><Link to="/issue-information">Issue Appointment</Link></li>
+          <li>Logout</li>
         </ul>
       </div>
     </div>
