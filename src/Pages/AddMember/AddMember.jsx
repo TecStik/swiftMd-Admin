@@ -21,6 +21,7 @@ const FormSchema = Yup.object({
 
 const AddMember = () => {
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const formik = useFormik({
     initialValues: {
@@ -31,14 +32,23 @@ const AddMember = () => {
     },
     onSubmit: (values) => {
       // dispatch the action
-      const data = {
-        username: values?.username,
-        email: values?.email,
-        password: values?.password,
-        role: values?.role,
-      };
-      // dispatch(createPostAction(data));
-      console.log(data)
+
+
+
+      axios({
+        method: "post",
+        url: Url + "/auth/User",
+        data: {
+          name: values?.username,
+          email: values.email,
+          password: values.password,
+          Role: values?.role
+        }
+      }).then((res) => {
+        setLoading(false)
+        console.log(res?.data, "response");
+
+      }).catch(err => console.log(err?.message))
 
     },
     validationSchema: FormSchema,
@@ -55,17 +65,17 @@ const AddMember = () => {
       </div>
       <div className={AddMemberStyle.formContainer}>
         <form onSubmit={formik.handleSubmit}>
-          <label style={{fontWeight:"600"}}>User Name</label>
+          <label style={{ fontWeight: "600" }}>User Name</label>
           <Input className={AddMemberStyle.input} type="text" placeholder='User Name' value={formik.values.username} onChange={formik.handleChange("username")} onBlur={formik.handleBlur("username")} name='username' id='username' />
           <div className={AddMemberStyle.error}>
             {formik?.touched?.username && formik?.errors?.username}
           </div>
-          <label style={{fontWeight:"600"}}>Email</label>
+          <label style={{ fontWeight: "600" }}>Email</label>
           <Input className={AddMemberStyle.input} type="email" placeholder='Email' value={formik.values.email} onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")} name='email' id='email' />
           <div className={AddMemberStyle.error}>
             {formik?.touched?.email && formik?.errors?.email}
           </div>
-          <label style={{fontWeight:"600"}}>Password New</label>
+          <label style={{ fontWeight: "600" }}>Password New</label>
           <InputGroup size='md'>
             <Input
               pr='4.5rem'
@@ -80,9 +90,9 @@ const AddMember = () => {
             </InputRightElement>
           </InputGroup>
           <div className={AddMemberStyle.error}>
-              {formik?.touched?.password && formik?.errors?.password}
-            </div>
-          <label style={{fontWeight:"600"}}>Role</label>
+            {formik?.touched?.password && formik?.errors?.password}
+          </div>
+          <label style={{ fontWeight: "600" }}>Role</label>
           <Select className={AddMemberStyle.input} value={formik.values.role} onChange={formik.handleChange("role")} onBlur={formik.handleBlur("role")} name='role' id='role'>
             <option value="admin">Admin</option>
             <option value="cashier">Cashier</option>

@@ -18,7 +18,9 @@ import {
     Button,
     useDisclosure,
     Select
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import * as Yup from "yup";
 
 
 
@@ -28,9 +30,39 @@ import PaginationComponent from "../../Components/Pagination";
 const itemsPerPage = 2;  //pagination limit here
 
 
+// Form Schema
+
+const FormSchema = Yup.object({
+    username: Yup.string().required("User Name is Required"),
+    email: Yup.string().required("Email is Required"),
+    phone: Yup.string().required("Phone is Required"),
+    role: Yup.string().required("Role is Required"),
+});
+
 const MemberInformation = () => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const formik = useFormik({
+        initialValues: {
+            username: "",
+            email: "",
+            phone: "",
+            role: "",
+        },
+        onSubmit: (values) => {
+            // dispatch the action
+            const data = {
+                username: values?.username,
+                email: values?.email,
+                phone: values?.phone,
+                role: values?.role,
+            };
+            // dispatch(createPostAction(data));
+            console.log(data)
+
+        },
+        validationSchema: FormSchema,
+    });
 
     const initialRef = React.useRef(null)
     const finalRef = React.useRef(null)
@@ -104,31 +136,41 @@ const MemberInformation = () => {
                     <ModalBody pb={6}>
                         <FormControl>
                             <FormLabel>Name</FormLabel>
-                            <Input ref={initialRef} placeholder='Name' />
+                            <Input  placeholder='Name' name='username' onChange={formik.handleChange("username")} onBlur={formik.handleBlur("username")} id='username' value={formik.values.username} />
                         </FormControl>
+                        <div className={MemberStyle.error}>
+                            {formik?.touched?.username && formik?.errors?.username}
+                        </div>
 
                         <FormControl mt={4}>
                             <FormLabel>Email Address</FormLabel>
-                            <Input placeholder='Email Address' />
+                            <Input placeholder='Email Address' name='email' onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")} id='email' value={formik.values.email} />
                         </FormControl>
-
+                        <div className={MemberStyle.error}>
+                            {formik?.touched?.email && formik?.errors?.email}
+                        </div>
                         <FormControl mt={4}>
                             <FormLabel>Phone Number</FormLabel>
-                            <Input placeholder='Phone Number' />
+                            <Input placeholder='Phone Number' name='phone' id='phone' onChange={formik.handleChange("phone")} onBlur={formik.handleBlur("phone")} value={formik.values.phone} />
                         </FormControl>
-
+                        <div className={MemberStyle.error}>
+                            {formik?.touched?.phone && formik?.errors?.phone}
+                        </div>
                         <FormControl mt={4}>
                             <FormLabel>Role</FormLabel>
-                            <Select>
+                            <Select value={formik.values.role} name='role' id='role' onChange={formik.handleChange("role")} onBlur={formik.handleBlur("role")}>
                                 <option value='admin'>Admin</option>
                                 <option value='cashier'>Cashier</option>
                                 <option value='assistant'>Assistant</option>
                             </Select>
                         </FormControl>
+                        <div className={MemberStyle.error}>
+                            {formik?.touched?.role && formik?.errors?.role}
+                        </div>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3}>
+                        <Button colorScheme='blue' mr={3} onClick={formik.handleSubmit}>
                             Update
                         </Button>
                         <Button onClick={onClose}>Cancel</Button>
