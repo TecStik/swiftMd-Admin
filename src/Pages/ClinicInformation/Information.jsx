@@ -79,101 +79,100 @@ const Information = () => {
       <div className={ClinicStyle.heading}>
         <h3>Clinic Information</h3>
       </div>
-      <table className={ClinicStyle.table}>
-        <thead className={ClinicStyle.thead_bg}>
-          <tr className={ClinicStyle.thead_bg}>
-            <th>ClinicId</th>
-            <th>ClinicDoctorName</th>
-            <th>ClinicLocation</th>
-            <th>ClinicStartingTime</th>
-            <th>ClinicEndTime</th>
-            <th></th>
-          </tr>
-        </thead>
+      {
+        loading ? <div className={ClinicStyle.loader}>
+          <CircularProgress />
+        </div> : <>
 
-        <tbody>
-          {
+          <table className={ClinicStyle.table}>
+            <thead className={ClinicStyle.thead_bg}>
+              <tr className={ClinicStyle.thead_bg}>
+                <th>ClinicId</th>
+                <th>ClinicDoctorName</th>
+                <th>ClinicLocation</th>
+                <th>ClinicStartingTime</th>
+                <th>ClinicEndTime</th>
+                <th></th>
+              </tr>
+            </thead>
 
-            loading ?
-              <div style={{display:"flex",justifyContent:"center",alignItems:"center",margin:'auto'}}>
-                <CircularProgress />
-              </div>
+            <tbody>
+              {
+                displayedData && displayedData?.map((elm) => (
+                  <tr key={elm?._id}>
+                    <td>{elm?.ClinicId}</td>
+                    <td>{elm?.ClinicDoctorName}</td>
+                    <td>{elm?.ClinicLocation}</td>
 
-              :
-
-              displayedData && displayedData?.map((elm) => (
-                <tr key={elm?._id}>
-                  <td>{elm?.ClinicId}</td>
-                  <td>{elm?.ClinicDoctorName}</td>
-                  <td>{elm?.ClinicLocation}</td>
-
-                  <td>{moment(elm?.ClinicStartingTime).format("llll")}</td>
-                  <td>{moment(elm?.ClinicEndTime).format("llll")}</td>
-                  <td onClick={onOpen}>
-                    <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} />
-                  </td>
-                </tr>
+                    <td>{moment(elm?.ClinicStartingTime).format("llll")}</td>
+                    <td>{moment(elm?.ClinicEndTime).format("llll")}</td>
+                    <td onClick={onOpen}>
+                      <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} />
+                    </td>
+                  </tr>
 
 
-              ))
-          }
-        </tbody>
-      </table>
+                ))
+              }
+            </tbody>
+          </table>
 
 
-      {/* modal start here */}
+          {/* modal start here */}
 
 
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Update Clinic Information</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Clinic Id</FormLabel>
-              <Input ref={initialRef} placeholder='Clinic Id' />
-            </FormControl>
+          <Modal
+            initialFocusRef={initialRef}
+            finalFocusRef={finalRef}
+            isOpen={isOpen}
+            onClose={onClose}
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Update Clinic Information</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody pb={6}>
+                <FormControl>
+                  <FormLabel>Clinic Id</FormLabel>
+                  <Input ref={initialRef} placeholder='Clinic Id' />
+                </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Clinic Doctar Name</FormLabel>
-              <Input placeholder='Clinic Doctar Name' />
-            </FormControl>
+                <FormControl mt={4}>
+                  <FormLabel>Clinic Doctar Name</FormLabel>
+                  <Input placeholder='Clinic Doctar Name' />
+                </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Clinic Location</FormLabel>
-              <Input placeholder='Clinic Location' />
-            </FormControl>
+                <FormControl mt={4}>
+                  <FormLabel>Clinic Location</FormLabel>
+                  <Input placeholder='Clinic Location' />
+                </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Clinic Starting Time</FormLabel>
-              <Input placeholder='Clinic Starting Time' type='date' />
-            </FormControl>
+                <FormControl mt={4}>
+                  <FormLabel>Clinic Starting Time</FormLabel>
+                  <Input placeholder='Clinic Starting Time' type='date' />
+                </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Clinic End Time</FormLabel>
-              <Input placeholder='Clinic End Time' type='date' />
-            </FormControl>
-          </ModalBody>
+                <FormControl mt={4}>
+                  <FormLabel>Clinic End Time</FormLabel>
+                  <Input placeholder='Clinic End Time' type='date' />
+                </FormControl>
+              </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
-              Update
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+              <ModalFooter>
+                <Button colorScheme='blue' mr={3}>
+                  Update
+                </Button>
+                <Button onClick={onClose}>Cancel</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
 
 
-      {/* modal end here */}
-      {/* pagination component here */}
-      <PaginationComponent totalPages={totalPages} onChange={handlePageChange} page={page} />
+          {/* modal end here */}
+          {/* pagination component here */}
+          <PaginationComponent totalPages={totalPages} onChange={handlePageChange} page={page} />
+        </>
+      }
     </div>
   )
 }
