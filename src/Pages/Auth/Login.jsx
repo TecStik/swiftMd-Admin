@@ -75,6 +75,7 @@ const Login = () => {
                 }
             }).then((res) => {
                 notify()
+                localStorage.setItem("Role", JSON.stringify(res?.data?.Role))
                 console.log(res?.data, "response");
                 user.setUserData(res?.data);
 

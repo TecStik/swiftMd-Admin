@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext,useEffect } from 'react';
 import AddMemberStyle from "./AddMember.module.css";
 import axios from 'axios';
 import { Url } from '../../Components/core';
@@ -6,7 +6,9 @@ import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { Input, Select, InputGroup, InputRightElement, Button } from "@chakra-ui/react";
 import { BiSolidHide, BiSolidShow } from "react-icons/bi"
-
+import StoreContext from '../../ContextApi';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 // Form Schema
 
@@ -17,12 +19,46 @@ const FormSchema = Yup.object({
   role: Yup.string().required("Role is Required"),
 });
 
+function simulateNetworkRequest() {
+  //
+  return new Promise((resolve) => setTimeout(resolve, 2000));
+}
+
+
 
 
 const AddMember = () => {
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const user = useContext(StoreContext);
+  const navigate = useNavigate();
 
+
+
+  const notify = () =>
+    toast.success("Member has been Added", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  useEffect(() => {
+    if (loading) {
+      simulateNetworkRequest().then(() => {
+        setLoading(false);
+      });
+    }
+  }, [loading]);
+
+
+
+
+  console.log("ali admin login ===>", user?.userData)
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -32,21 +68,22 @@ const AddMember = () => {
     },
     onSubmit: (values) => {
       // dispatch the action
-
-
-
       axios({
         method: "post",
         url: Url + "/auth/User",
         data: {
           name: values?.username,
-          email: values.email,
+          loginId: values.email,
           password: values.password,
-          Role: values?.role
+          Role: values?.role,
+          createdBy: user?.userData?._id
         }
       }).then((res) => {
-        setLoading(false)
+        notify()
         console.log(res?.data, "response");
+        setTimeout(() => {
+          navigate("/member-information")
+        }, 2000);
 
       }).catch(err => console.log(err?.message))
 
