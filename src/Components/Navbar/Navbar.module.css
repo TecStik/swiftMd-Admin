@@ -4,7 +4,7 @@
     background-color: #6DAABC;
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: space-between;
 }
 
 .container img{
@@ -17,4 +17,10 @@
     display: flex;
     width: 100%;
     /* background-color: red; */
+}
+
+.selectContainer{
+    width: 14% !important;
+    margin-right: 20px;
+    /* color: fff !important; */
 }

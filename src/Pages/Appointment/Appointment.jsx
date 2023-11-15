@@ -36,13 +36,6 @@ const Appointment = () => {
 
   return (
     <div className={AppointStyle.container}>
-      <div className={AppointStyle.end_container}>
-        <select className={AppointStyle.select}>
-          <option value="selectclinic">Select Clinic</option>
-          <option value="nic1">123456</option>
-          <option value="nic2">123455</option>
-        </select>
-      </div>
       {/* use useable component here */}
       <UseableComponentbackground data={mydata} title={title} loading={loading}/>
     </div>

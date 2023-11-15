@@ -1,51 +1,94 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AddClinicStyle from "./Patient.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Input, Select } from "@chakra-ui/react";
+import { Button, Input, Select } from "@chakra-ui/react";
+import axios from 'axios';
+import { Url } from "../../Components/core/index";
+import StoreContext from '../../ContextApi';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
+
+function simulateNetworkRequest() {
+  //
+  return new Promise((resolve) => setTimeout(resolve, 2000));
+}
 
 
 // Form Schema
 
 const FormSchema = Yup.object({
-  name: Yup.string().required("Name is Required"),
-  dateofbirth: Yup.string().required("Date Of Birth is Required"),
-  gender: Yup.string().required("Gender is Required"),
-  email: Yup.string().required("Email is Required"),
-  mrnumber: Yup.string().required("MR Number is Required"),
-  address: Yup.string().required("Address is Required"),
-  primarycontact: Yup.string().required("Primary Contact is Required"),
-  secondarycontact: Yup.string().required("Secondary Contact is Required"),
+  patientName: Yup.string().required("Patient Name is Required"),
+  patientMrnumber: Yup.string().required("Patient Mr Number is Required"),
+  patientNumber: Yup.string().required("Patient Number is Required"),
+  patientAge: Yup.string().required("Patient Age is Required"),
 });
 
 
-const AddClinic = () => {
+const PatientRegisteration = () => {
+  const user = useContext(StoreContext);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const notify = () =>
+    toast.success("Patient has been Added", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  useEffect(() => {
+    if (loading) {
+      simulateNetworkRequest().then(() => {
+        setLoading(false);
+      });
+    }
+  }, [loading]);
+
+
+
+
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      dateofbirth: "",
-      gender: "",
-      email: "",
-      mrnumber: "",
-      address: "",
-      primarycontact: "",
-      secondarycontact: ""
+      patientName: "",
+      patientMrnumber: "",
+      patientNumber: "",
+      patientAge: ""
     },
     onSubmit: (values) => {
       // dispatch the action
       const data = {
-        name: values?.name,
-        dateofbirth: values?.dateofbirth,
-        gender: values?.gender,
-        email: values?.email,
-        mrnumber: values?.mrnumber,
-        address: values?.address,
-        primarycontact: values?.primarycontact,
-        secondarycontact: values?.secondarycontact,
+        patientName: values?.patientName,
+        patientMrnumber: values?.patientMrnumber,
+        patientNumber: values?.patientNumber,
+        patientAge: values?.patientAge
       };
-      // dispatch(createPostAction(data));
       console.log(data)
+      //  dispatch action here
+      axios({
+        method: 'post',
+        url: Url + "/PatientData",
+        data: {
+          PatientName: values?.patientName,
+          PatientMRNumber: values?.patientMrnumber,
+          PatientNumber: values?.patientNumber,
+          PatientAge: values?.patientAge,
+          BelongsTo: user?.userData?._id
+        }
+      }).then((res) => {
+        notify()
+        console.log("patient has been added", res?.data);
+        setTimeout(() => {
+          navigate("/patient-detail")
+        }, 2000);
+      }).catch(err => console.log(err?.message));
 
     },
     validationSchema: FormSchema,
@@ -61,71 +104,38 @@ const AddClinic = () => {
       <div className={AddClinicStyle.formContainer}>
         <form onSubmit={formik.handleSubmit}>
           <div>
-            <label>Name</label>
-            <Input placeholder='Name' value={formik.values.name} onChange={formik.handleChange("name")} onBlur={formik.handleBlur("name")} name='name' id='name' className={AddClinicStyle.inp} />
+            <label>Patient Name</label>
+            <Input placeholder='Patient Name' value={formik.values.patientName} onChange={formik.handleChange("patientName")} onBlur={formik.handleBlur("patientName")} name='patientName' id='patientName' className={AddClinicStyle.inp} />
             <div className={AddClinicStyle.error}>
-              {formik?.touched?.name && formik?.errors?.name}
+              {formik?.touched?.patientName && formik?.errors?.patientName}
             </div>
           </div>
           <div>
-            <label>Date of Birth</label>
-            <Input type="date" placeholder='Date of Birth' value={formik.values.dateofbirth} onChange={formik.handleChange("dateofbirth")} onBlur={formik.handleBlur("dateofbirth")} name='dateofbirth' id='dateofbirth' className={AddClinicStyle.inp} />
+            <label>Patient Mr Number</label>
+            <Input placeholder='Patient Mr Number' type="text" value={formik.values.patientMrnumber} onChange={formik.handleChange("patientMrnumber")} onBlur={formik.handleBlur("patientMrnumber")} name='patientMrnumber' id='patientMrnumber' className={AddClinicStyle.inp} />
             <div className={AddClinicStyle.error}>
-              {formik?.touched?.dateofbirth && formik?.errors?.dateofbirth}
+              {formik?.touched?.patientMrnumber && formik?.errors?.patientMrnumber}
             </div>
           </div>
           <div>
-            <label>Gender</label>
-            <Select placeholder='Gender' type="text" value={formik.values.gender} onChange={formik.handleChange("gender")} onBlur={formik.handleBlur("gender")} name='gender' id='gender' className={AddClinicStyle.inp}>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </Select>
-
-
+            <label>Patient Number</label>
+            <Input placeholder='Patient Number' type="text" value={formik.values.patientNumber} onChange={formik.handleChange("patientNumber")} onBlur={formik.handleBlur("patientNumber")} name='patientNumber' id='patientNumber' className={AddClinicStyle.inp} />
             <div className={AddClinicStyle.error}>
-              {formik?.touched?.gender && formik?.errors?.gender}
+              {formik?.touched?.patientNumber && formik?.errors?.patientNumber}
             </div>
           </div>
           <div>
-            <label>Email</label>
-            <Input placeholder='Email' type="email" value={formik.values.email} onChange={formik.handleChange("email")} onBlur={formik.handleBlur("email")} name='email' id='email' className={AddClinicStyle.inp} />
+            <label>Patient Age</label>
+            <Input placeholder='Patient Age' type="text" value={formik.values.patientAge} onChange={formik.handleChange("patientAge")} onBlur={formik.handleBlur("patientAge")} name='patientAge' id='patientAge' className={AddClinicStyle.inp} />
             <div className={AddClinicStyle.error}>
-              {formik?.touched?.email && formik?.errors?.email}
+              {formik?.touched?.patientAge && formik?.errors?.patientAge}
             </div>
           </div>
-          <div>
-            <label>MR Number</label>
-            <Input placeholder='MR Number' type="text" value={formik.values.mrnumber} onChange={formik.handleChange("mrnumber")} onBlur={formik.handleBlur("mrnumber")} name='mrnumber' id='mrnumber' className={AddClinicStyle.inp} />
-            <div className={AddClinicStyle.error}>
-              {formik?.touched?.mrnumber && formik?.errors?.mrnumber}
-            </div>
-          </div>
-          <div>
-            <label>Address</label>
-            <Input placeholder='Address' type="text" value={formik.values.address} onChange={formik.handleChange("address")} onBlur={formik.handleBlur("address")} name='address' id='address' className={AddClinicStyle.inp} />
-            <div className={AddClinicStyle.error}>
-              {formik?.touched?.address && formik?.errors?.address}
-            </div>
-          </div>
-          <div>
-            <label>Primary Contact</label>
-            <Input placeholder='Primary Contact' type="text" value={formik.values.primarycontact} onChange={formik.handleChange("primarycontact")} onBlur={formik.handleBlur("primarycontact")} name='primarycontact' id='primarycontact' className={AddClinicStyle.inp}/>
-            <div className={AddClinicStyle.error}>
-              {formik?.touched?.primarycontact && formik?.errors?.primarycontact}
-            </div>
-          </div>
-          <div>
-            <label>Secondary Contact</label>
-            <Input placeholder='Secondary Contact' type="text" value={formik.values.secondarycontact} onChange={formik.handleChange("secondarycontact")} onBlur={formik.handleBlur("secondarycontact")} name='secondarycontact' id='secondarycontact' className={AddClinicStyle.inp}/>
-            <div className={AddClinicStyle.error}>
-              {formik?.touched?.secondarycontact && formik?.errors?.secondarycontact}
-            </div>
-          </div>
-          <Input type="submit" value="Confirm" className={AddClinicStyle.btn} />
+          <Button type="submit" className={AddClinicStyle.btn}>Confirm</Button>
         </form>
       </div>
     </div>
   )
 }
 
-export default AddClinic
+export default PatientRegisteration

@@ -84,21 +84,14 @@ td {
 }
 
 .filterbtn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 0px 30px;
     position: absolute;
-    /* top: -60px; */
     right: 40px;
-    background-color: #117692;
+    background-color: #117692 !important;
     width: 100px;
-    top: 210px;
-    color: #fff;
+    top: 150px;
+    color: #fff !important;
     font-size: 1.1rem;
-    font-weight: bold;
-    letter-spacing: 3px;
-    cursor: pointer;
 }
 
 

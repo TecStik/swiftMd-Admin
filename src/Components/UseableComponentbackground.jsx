@@ -7,7 +7,8 @@ import dateImg from "./images/date.png";
 import doctornameImg from "./images/menname.png";
 import { CircularProgress } from "@mui/material";
 import moment from "moment";
-import { Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Button } from '@chakra-ui/react';
+
 
 const itemsPerPage = 4;  //pagination limit here
 
@@ -39,9 +40,9 @@ const UseableComponentbackground = ({ data, title, loading }) => {
           <CircularProgress />
         </div> : <div className={UseableStyle.container}>
           <h2>{title}</h2>
-          <div className={UseableStyle.filterbtn}>
+          <Button className={UseableStyle.filterbtn}>
             FILTER
-          </div>
+          </Button>
 
           <TableContainer>
             <Table variant='striped' colorScheme='teal'>
