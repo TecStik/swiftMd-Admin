@@ -81,3 +81,9 @@ td {
     background-color: #D9D9D9;
     height: 50px;
 }
+
+.error{
+    color: red;
+    font-size: 0.8rem;
+    padding: 4px 0px;
+}

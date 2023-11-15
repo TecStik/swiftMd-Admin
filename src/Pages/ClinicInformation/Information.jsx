@@ -25,7 +25,7 @@ import {
   Th,
   Tbody,
   Td,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 import { Url } from '../../Components/core';
 import moment from 'moment';
 import { CircularProgress } from "@mui/material";
