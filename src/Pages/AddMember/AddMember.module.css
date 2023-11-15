@@ -38,12 +38,12 @@
 
 .btn {
     width: 30%;
-    background-color: #117692;
-    padding: 10px;
-    border-radius: 50px;
+    background-color: #117692 !important;
+    /* padding: 10px; */
+    /* border-radius: 50px; */
     margin: auto;
     margin-top: 20px;
-    color: #fff;
+    color: #fff !important;
 }
 
 .formContainer form input {

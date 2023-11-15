@@ -138,7 +138,7 @@ const AddMember = () => {
           <div className={AddMemberStyle.error}>
             {formik?.touched?.role && formik?.errors?.role}
           </div>
-          <button type='submit' className={AddMemberStyle.btn}>Confirm</button>
+          <Button type='submit' className={AddMemberStyle.btn}>Confirm</Button>
         </form>
       </div>
     </div>

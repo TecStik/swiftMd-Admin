@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Url } from '../../Components/core';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
-import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input,Button } from "@chakra-ui/react";
 
 
 // Form Schema
@@ -58,7 +58,7 @@ const IssueInformation = () => {
           <div className={AddMemberStyle.error}>
             {formik?.touched?.time && formik?.errors?.time}
           </div>
-          <button type='submit' className={AddMemberStyle.btn}>Confirm</button>
+          <Button type='submit' className={AddMemberStyle.btn}>Confirm</Button>
         </form>
       </div>
     </div>

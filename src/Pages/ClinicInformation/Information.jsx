@@ -40,7 +40,7 @@ const FormSchema = Yup.object({
 
 
 
-const itemsPerPage = 2;  //pagination limit here
+const itemsPerPage = 4;  //pagination limit here
 
 
 const Information = () => {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext,useState,useEffect } from 'react';
 import AddClinicStyle from "./AddClinic.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -7,6 +7,8 @@ import { Button } from "@chakra-ui/react";
 import axios from 'axios';
 import { Url } from "../../Components/core/index";
 import StoreContext from '../../ContextApi';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 // Form Schema
@@ -15,17 +17,45 @@ const FormSchema = Yup.object({
   clinicid: Yup.string().required("Clinic Id is Required"),
   clinicdoctorname: Yup.string().required("Clinic Doctor Name is Required"),
   cliniclocation: Yup.string().required("Clinic Location is Required"),
-  cliniccurrentno: Yup.string().required("Clinic Current No is Required"),
   cliniccontact: Yup.string().required("Clinic Contact is Required"),
-  status: Yup.string().required("Status is Required"),
   starttime: Yup.string().required("Start Time is Required"),
   endtime: Yup.string().required("End Time is Required"),
   avg: Yup.string().required("Avg is Required"),
 });
 
+function simulateNetworkRequest() {
+  //
+  return new Promise((resolve) => setTimeout(resolve, 2000));
+}
+
+
+
 
 const AddClinic = () => {
   const user = useContext(StoreContext);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+
+  const notify = () =>
+    toast.success("Clinic has been Added", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  useEffect(() => {
+    if (loading) {
+      simulateNetworkRequest().then(() => {
+        setLoading(false);
+      });
+    }
+  }, [loading])
 
   // console.log(user?.userData)
   const formik = useFormik({
@@ -33,10 +63,9 @@ const AddClinic = () => {
       clinicid: "",
       clinicdoctorname: "",
       cliniclocation: "",
-      cliniccurrentno: "",
       cliniccontact: "",
-      // starttime: "",
-      // endtime: "",
+      starttime: "",
+      endtime: "",
       avg: ""
     },
     onSubmit: (values) => {
@@ -45,33 +74,40 @@ const AddClinic = () => {
         clinicid: values?.clinicid,
         clinicdoctorname: values?.clinicdoctorname,
         cliniclocation: values?.cliniclocation,
-        cliniccurrentno: values?.cliniccurrentno,
         cliniccontact: values?.cliniccontact,
-        // starttime: values?.starttime,
-        // endtime: values?.endtime,
+        starttime: values?.starttime,
+        endtime: values?.endtime,
         avg: values?.avg
       };
 
+      console.log(data)
+
 
       // submit add clinic herte
-      // axios({
-      //   method: "post",
-      //   url: Url + "/ClinictData",
-      //   data: {
-      //     ClinicId: values.clinicid,
-      //     ClinicDoctorName: values.clinicdoctorname,
-      //     ClinicLocation: values.cliniclocation,
-      //     ClinicCurrentNo: values.cliniccurrentno,
-      //     BelongsTo: user?.userData?._id,
-      //     status: "Closed",
-      //   }
-      // })
+      axios({
+        method: "post",
+        url: Url + "/ClinictData",
+        data: {
+          ClinicId: values.clinicid,
+          ClinicDoctorName: values.clinicdoctorname,
+          ClinicLocation: values.cliniclocation,
+          ClinicCurrentNo: 0,
+          ClinicContact: values.cliniccontact,
+          BelongsTo: user?.userData?._id,
+          status: "Closed",
+          ClinicStartingTime: values.starttime,
+          ClinicEndTime: values.endtime,
+          Avg: values.avg,
+          ClinicLastIssueNum: 0
+        }
+      }).then((res) => {
+        notify();
+        console.log("Client has been added", res?.data);
+        setTimeout(() => {
+          navigate("/clinic-information")
+        }, 2000);
+      }).catch((err) => console.log(err?.message))
 
-
-
-
-
-      console.log(data)
 
     },
     validationSchema: FormSchema,
@@ -110,14 +146,6 @@ const AddClinic = () => {
           </div>
 
           <div>
-            <label>Clinic Current No</label>
-            <Input type="text" placeholder='Clinic Current No' value={formik.values.cliniccurrentno} onChange={formik.handleChange("cliniccurrentno")} onBlur={formik.handleBlur("cliniccurrentno")} name='cliniccurrentno' id='cliniccurrentno' />
-            <div className={AddClinicStyle.error}>
-              {formik?.touched?.cliniccurrentno && formik?.errors?.cliniccurrentno}
-            </div>
-          </div>
-
-          <div>
             <label>Clinic Contact</label>
             <Input type="text" placeholder='Clinic Contact' value={formik.values.cliniccontact} onChange={formik.handleChange("cliniccontact")} onBlur={formik.handleBlur("cliniccontact")} name='cliniccontact' id='cliniccontact' />
             <div className={AddClinicStyle.error}>
@@ -147,7 +175,7 @@ const AddClinic = () => {
 
 
 
-          {/* <div className={AddClinicStyle.main__start_time_container}>
+          <div className={AddClinicStyle.main__start_time_container}>
             <div>
               <label>Start time</label>
               <Input placeholder='Start Time' type="date" value={formik.values.starttime} onChange={formik.handleChange("starttime")} onBlur={formik.handleBlur("starttime")} name='starttime' id='starttime' />
@@ -162,9 +190,9 @@ const AddClinic = () => {
                 {formik?.touched?.endtime && formik?.errors?.endtime}
               </div>
             </div>
-          </div> */}
+          </div>
           {/* <input type="button" value="Submit" className={AddClinicStyle.btn}/> */}
-             <Button type="submit" className={AddClinicStyle.btn}>Add Clinic</Button>
+          <Button type="submit" className={AddClinicStyle.btn}>Add Clinic</Button>
         </form>
       </div>
     </div>
