@@ -41,6 +41,7 @@ const PatientDetails = () => {
   const finalRef = React.useRef(null)
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editdata, setEditData] = useState(null);
   console.log(data)
 
   useEffect(() => {
@@ -65,12 +66,21 @@ const PatientDetails = () => {
   console.log(data)
 
 
+  // update all function her
+  const handleGetData = (data) => {
+    setEditData(data)
+
+    onOpen();
+  }
+
+  console.log("update testing data here", editdata)
+
 
   const formik = useFormik({
     initialValues: {
-      PatientName: "",
-      PatientNumber: "",
-      PatientMRNumber: ""
+      PatientName: editdata?.PatientName || "",
+      PatientNumber: editdata?.PatientNumber || "",
+      PatientMRNumber: editdata?.PatientMRNumber || "",
     },
     onSubmit: (values) => {
       // dispatch the action
@@ -98,6 +108,10 @@ const PatientDetails = () => {
     page * itemsPerPage
   );
 
+  const handleCloseModal = () => {
+    onClose();
+    formik.resetForm(); // Reset the form when the modal is closed
+  };
 
   return (
     <div className={ClinicStyle.container}>
@@ -128,7 +142,7 @@ const PatientDetails = () => {
                       <Td>{elm?.PatientNumber}</Td>
                       <Td>{elm?.PatientMRNumber}</Td>
                       <Td onClick={onOpen}>
-                        <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} />
+                        <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} onClick={() => handleGetData(elm)} />
                       </Td>
                     </Tr>
                   ))
@@ -146,7 +160,7 @@ const PatientDetails = () => {
             initialFocusRef={initialRef}
             finalFocusRef={finalRef}
             isOpen={isOpen}
-            onClose={onClose}
+            onClose={handleCloseModal}
           >
             <ModalOverlay />
             <ModalContent>
