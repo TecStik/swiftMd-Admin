@@ -18,6 +18,13 @@ import {
   FormLabel,
   Input,
   Button,
+  TableContainer,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
 } from '@chakra-ui/react'
 import { Url } from '../../Components/core';
 import moment from 'moment';
@@ -122,39 +129,43 @@ const Information = () => {
         loading ? <div className={ClinicStyle.loader}>
           <CircularProgress />
         </div> : <>
+          <TableContainer>
 
-          <table className={ClinicStyle.table}>
-            <thead className={ClinicStyle.thead_bg}>
-              <tr className={ClinicStyle.thead_bg}>
-                <th>ClinicId</th>
-                <th>ClinicDoctorName</th>
-                <th>ClinicLocation</th>
-                <th>ClinicStartingTime</th>
-                <th>ClinicEndTime</th>
-                <th></th>
-              </tr>
-            </thead>
+            <Table className={ClinicStyle.table}>
+              <Thead className={ClinicStyle.thead_bg}>
+                <Tr className={ClinicStyle.thead_bg}>
+                  <Th>Clinic Id</Th>
+                  <Th>Clinic Doctor Name</Th>
+                  <Th>Clinic Location</Th>
+                  <Th>Clinic Starting Time</Th>
+                  <Th>Clinic End Time</Th>
+                  <Th></Th>
+                </Tr>
+              </Thead>
 
-            <tbody>
-              {
-                displayedData && displayedData?.map((elm) => (
-                  <tr key={elm?._id}>
-                    <td>{elm?.ClinicId}</td>
-                    <td>{elm?.ClinicDoctorName}</td>
-                    <td>{elm?.ClinicLocation}</td>
+              <Tbody>
+                {
+                  displayedData && displayedData?.map((elm) => (
+                    <Tr key={elm?._id}>
+                      <Td>{elm?.ClinicId}</Td>
+                      <Td>{elm?.ClinicDoctorName}</Td>
+                      <Td>{elm?.ClinicLocation}</Td>
 
-                    <td>{moment(elm?.ClinicStartingTime).format("llll")}</td>
-                    <td>{moment(elm?.ClinicEndTime).format("llll")}</td>
-                    <td onClick={onOpen}>
-                      <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} />
-                    </td>
-                  </tr>
+                      <Td>{moment(elm?.ClinicStartingTime).format("llll")}</Td>
+                      <Td>{moment(elm?.ClinicEndTime).format("llll")}</Td>
+                      <Td onClick={onOpen}>
+                        <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} />
+                      </Td>
+                    </Tr>
 
 
-                ))
-              }
-            </tbody>
-          </table>
+                  ))
+                }
+              </Tbody>
+            </Table>
+          </TableContainer>
+
+
 
 
           {/* modal start here */}
