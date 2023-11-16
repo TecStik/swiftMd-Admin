@@ -85,11 +85,11 @@ td {
 
 .filterbtn {
     padding: 0px 30px;
-    position: absolute;
-    right: 40px;
+    position: absolute !important;
+    right: 40px !important;
     background-color: #117692 !important;
     width: 100px;
-    top: 150px;
+    top: 150px !important;
     color: #fff !important;
     font-size: 1.1rem;
 }
