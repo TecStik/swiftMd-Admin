@@ -84,7 +84,9 @@ const PatientDetails = () => {
     }).then((res) => {
       setLoading(false);
       console.log("Patient Details", res?.data);
-      setData(res?.data);
+      setTimeout(() => {
+        setData(res?.data);
+      }, 1000);
     }).catch(err => console.log(err?.message))
   }, [myloading])
 

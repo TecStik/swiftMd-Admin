@@ -46,6 +46,14 @@
     color: #fff !important;
 }
 
+.btnconfirm{
+    width: 50%;
+    background-color: #117692 !important;
+    margin: auto;
+    margin-top: 20px;
+    color: #fff !important;
+}
+
 .formContainer form input {
     background-color: #E5E5E5;
     outline: none;
