@@ -22,6 +22,15 @@ import { Url } from "../../Components/core/index";
 import CircularProgress from '@mui/material/CircularProgress';
 import * as Yup from "yup";
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
+
+
+function simulateNetworkRequest() {
+  //
+  return new Promise((resolve) => setTimeout(resolve, 2000));
+}
+
+
 
 // Form Schema
 
@@ -35,13 +44,33 @@ const FormSchema = Yup.object({
 let itemsPerPage = 4;
 
 const PatientDetails = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const initialRef = React.useRef(null)
-  const finalRef = React.useRef(null)
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
   const [editdata, setEditData] = useState(null);
+  const [myloading, setMyLoading] = useState(false);
+  
+  const notify = () =>
+    toast.success("Patient has been Updated", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  useEffect(() => {
+    if (myloading) {
+      simulateNetworkRequest().then(() => {
+        setMyLoading(false);
+      });
+    }
+  }, [myloading]);
+
+  
   console.log(data)
 
   useEffect(() => {
@@ -65,34 +94,41 @@ const PatientDetails = () => {
   const totalPages = Math.ceil(data.length / itemsPerPage);
   console.log(data)
 
-
-  // update all function her
-  const handleGetData = (data) => {
-    setEditData(data)
-
-    onOpen();
-  }
-
-  console.log("update testing data here", editdata)
-
-
   const formik = useFormik({
     initialValues: {
-      PatientName: editdata?.PatientName || "",
-      PatientNumber: editdata?.PatientNumber || "",
-      PatientMRNumber: editdata?.PatientMRNumber || "",
+      PatientName: '',
+      PatientNumber: '',
+      PatientMRNumber: '',
     },
     onSubmit: (values) => {
-      // dispatch the action
-      const data = {
-        PatientName: values?.PatientName,
-        PatientNumber: values?.PatientNumber,
-        PatientMRNumber: values?.PatientMRNumber,
-      };
-      // dispatch(createPostAction(data));
-      console.log(data)
-
+      setUpdating(true);
+      // Perform an API request or update logic here
+      axios({
+        method: "put",
+        url: Url + `/UpdateFilteredPatient`,
+        data:{
+          filter: {
+            _id: editdata?._id,
+          },
+          update:{
+            PatientName: values?.PatientName,
+            PatientNumber: values?.PatientNumber,
+            PatientMRNumber: values?.PatientMRNumber
+          }
+        }
+      }).then((response) => {
+        console.log('Update successful', response.data);
+        onClose();
+        notify()
+      })
+        .catch((error) => {
+          console.error('Update failed', error);
+        })
+        .finally(() => {
+          setUpdating(false);
+        });
     },
+
     validationSchema: FormSchema,
   });
 
@@ -108,10 +144,29 @@ const PatientDetails = () => {
     page * itemsPerPage
   );
 
+
+
+  // update all function her
+  const handleGetData = (data) => {
+    setEditData(data);
+    formik.setValues({
+      PatientName: data?.PatientName || "",
+      PatientNumber: data?.PatientNumber || "",
+      PatientMRNumber: data?.PatientMRNumber || "",
+    });
+    onOpen();
+  };
+
+
   const handleCloseModal = () => {
     onClose();
     formik.resetForm(); // Reset the form when the modal is closed
   };
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const initialRef = React.useRef(null)
+  const finalRef = React.useRef(null)
 
   return (
     <div className={ClinicStyle.container}>
@@ -164,7 +219,7 @@ const PatientDetails = () => {
           >
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Update Clinic Information</ModalHeader>
+              <ModalHeader>Update Patient Information</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
 
