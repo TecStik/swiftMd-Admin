@@ -31,6 +31,7 @@ import moment from 'moment';
 import { CircularProgress } from "@mui/material";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
+import { toast } from 'react-toastify';
 
 
 // Form Schema
@@ -51,11 +52,10 @@ const itemsPerPage = 4;  //pagination limit here
 
 
 const Information = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const initialRef = React.useRef(null)
-  const finalRef = React.useRef(null)
   const [loading, setLoading] = useState(true)
+  const [editdata, setEditData] = useState(null);
+  const [updating, setUpdating] = useState(false);
+  const [myloading, setMyLoading] = useState(false);
 
   const [data, setData] = useState([]);
 
@@ -63,30 +63,31 @@ const Information = () => {
   const totalPages = Math.ceil(data.length / itemsPerPage);
   console.log(data)
 
+  const notify = () =>
+    toast.success("Client has been Updated", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
 
-  const formik = useFormik({
-    initialValues: {
-      clinicid: "",
-      clinicdoctarname: "",
-      cliniclocation: "",
-      clinicstarttime: "",
-      clinicendtime: ""
-    },
-    onSubmit: (values) => {
-      // dispatch the action
-      const data = {
-        clinicid: values?.clinicid,
-        clinicdoctarname: values?.clinicdoctarname,
-        cliniclocation: values?.cliniclocation,
-        clinicstarttime: values?.clinicstarttime,
-        clinicendtime: values?.clinicendtime,
-      };
-      // dispatch(createPostAction(data));
-      console.log(data)
+  function simulateNetworkRequest() {
+    //
+    return new Promise((resolve) => setTimeout(resolve, 2000));
+  }
 
-    },
-    validationSchema: FormSchema,
-  });
+
+  useEffect(() => {
+    if (myloading) {
+      simulateNetworkRequest().then(() => {
+        setMyLoading(false);
+      });
+    }
+  }, [myloading]);
 
 
 
@@ -104,7 +105,62 @@ const Information = () => {
       }, 1000);
       setData(res?.data)
     }).catch(err => console.log(err?.message))
-  }, [])
+  }, [myloading])
+
+
+  const formik = useFormik({
+    initialValues: {
+      clinicid: "",
+      clinicdoctarname: "",
+      cliniclocation: "",
+      clinicstarttime: "",
+      clinicendtime: ""
+    },
+    onSubmit: (values) => {
+      setUpdating(true);
+      // Perform an API request or update logic here
+      axios({
+        method: "put",
+        url: Url + "/UpdateFilteredClinic",
+        data: {
+          filter: {
+            _id: editdata?._id,
+          },
+          update: {
+            ClinicId: values?.clinicid,
+            ClinicDoctorName: values?.clinicdoctarname,
+            ClinicLocation: values?.cliniclocation,
+            ClinicStartingTime: values?.clinicstarttime,
+            ClinicEndTime: values?.clinicendtime,
+          }
+        }
+      }).then((response) => {
+        console.log('Update successful', response.data);
+        onClose();
+        notify();
+
+        // get real here
+        axios({
+          method: "post",
+          url: Url + "/filteredClinic",
+          data: {
+            "filter": {}
+          }
+        }).then((res) => {
+          console.log("clinic information", res?.data);
+          setTimeout(() => {
+            setLoading(false);
+          }, 1000);
+          setData(res?.data)
+        }).catch(err => console.log(err?.message))
+      }).catch((error) => {
+        console.error('Update failed', error);
+      }).finally(() => {
+        setUpdating(false)
+      })
+    },
+    validationSchema: FormSchema,
+  });
 
 
 
@@ -118,6 +174,28 @@ const Information = () => {
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
+
+  const handleGetData = (data) => {
+    setEditData(data);
+    formik.setValues({
+      clinicid: data?.ClinicId || "",
+      clinicdoctarname: data?.ClinicDoctorName || "",
+      cliniclocation: data?.ClinicLocation || "",
+      clinicstarttime: moment(data?.ClinicStartingTime).format("YYYY-MM-DD") || "",
+      clinicendtime: moment(data?.ClinicEndTime).format("YYYY-MM-DD") || "",
+    });
+  }
+
+
+  const handleCloseModal = () => {
+    onClose();
+    formik.resetForm(); // Reset the form when the modal is closed
+  };
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const initialRef = React.useRef(null)
+  const finalRef = React.useRef(null)
 
 
   return (
@@ -151,10 +229,10 @@ const Information = () => {
                       <Td>{elm?.ClinicDoctorName}</Td>
                       <Td>{elm?.ClinicLocation}</Td>
 
-                      <Td>{moment(elm?.ClinicStartingTime).format("llll")}</Td>
-                      <Td>{moment(elm?.ClinicEndTime).format("llll")}</Td>
+                      <Td>{moment(elm?.ClinicStartingTime).format("MMM Do YY")}</Td>
+                      <Td>{moment(elm?.ClinicEndTime).format("MMM Do YY")}</Td>
                       <Td onClick={onOpen}>
-                        <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} />
+                        <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} onClick={() => handleGetData(elm)} />
                       </Td>
                     </Tr>
 
@@ -175,7 +253,7 @@ const Information = () => {
             initialFocusRef={initialRef}
             finalFocusRef={finalRef}
             isOpen={isOpen}
-            onClose={onClose}
+            onClose={handleCloseModal}
           >
             <ModalOverlay />
             <ModalContent>
