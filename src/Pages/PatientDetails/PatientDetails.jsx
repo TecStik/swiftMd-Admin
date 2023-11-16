@@ -25,13 +25,6 @@ import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 
 
-function simulateNetworkRequest() {
-  //
-  return new Promise((resolve) => setTimeout(resolve, 2000));
-}
-
-
-
 // Form Schema
 
 const FormSchema = Yup.object({
@@ -49,7 +42,7 @@ const PatientDetails = () => {
   const [updating, setUpdating] = useState(false);
   const [editdata, setEditData] = useState(null);
   const [myloading, setMyLoading] = useState(false);
-  
+
   const notify = () =>
     toast.success("Patient has been Updated", {
       position: "top-right",
@@ -62,6 +55,12 @@ const PatientDetails = () => {
       theme: "light",
     });
 
+  function simulateNetworkRequest() {
+    //
+    return new Promise((resolve) => setTimeout(resolve, 2000));
+  }
+
+
   useEffect(() => {
     if (myloading) {
       simulateNetworkRequest().then(() => {
@@ -70,7 +69,7 @@ const PatientDetails = () => {
     }
   }, [myloading]);
 
-  
+
   console.log(data)
 
   useEffect(() => {
@@ -87,7 +86,7 @@ const PatientDetails = () => {
       console.log("Patient Details", res?.data);
       setData(res?.data);
     }).catch(err => console.log(err?.message))
-  }, [])
+  }, [myloading])
 
 
   const [page, setPage] = useState(1);
@@ -106,11 +105,11 @@ const PatientDetails = () => {
       axios({
         method: "put",
         url: Url + `/UpdateFilteredPatient`,
-        data:{
+        data: {
           filter: {
             _id: editdata?._id,
           },
-          update:{
+          update: {
             PatientName: values?.PatientName,
             PatientNumber: values?.PatientNumber,
             PatientMRNumber: values?.PatientMRNumber
@@ -120,6 +119,21 @@ const PatientDetails = () => {
         console.log('Update successful', response.data);
         onClose();
         notify()
+
+        axios({
+          method: "post",
+          url: Url + "/filteredPatients",
+          data: {
+            filter: {
+
+            }
+          }
+        }).then((res) => {
+          // Update data state with fetched data
+          setLoading(false);
+          console.log("Patient Details", res?.data);
+          setData(res?.data);
+        }).catch(err => console.log(err?.message))
       })
         .catch((error) => {
           console.error('Update failed', error);
