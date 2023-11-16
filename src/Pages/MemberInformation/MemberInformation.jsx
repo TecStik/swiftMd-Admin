@@ -34,6 +34,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 // pagination import here
 import PaginationComponent from "../../Components/Pagination";
+import { toast } from 'react-toastify';
 
 const itemsPerPage = 5;  //pagination limit here
 
@@ -51,9 +52,41 @@ const MemberInformation = () => {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [editdata, setEditData] = useState(null);
+    const [myloading, setMyLoading] = useState(false);
+    const [updating, setUpdating] = useState(false);
     const [page, setPage] = useState(1);
     const totalPages = Math.ceil(data.length / itemsPerPage);
     console.log(data)
+
+
+    const notify = () =>
+        toast.success("Member has been Updated", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+
+    function simulateNetworkRequest() {
+        //
+        return new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+
+
+    useEffect(() => {
+        if (myloading) {
+            simulateNetworkRequest().then(() => {
+                setMyLoading(false);
+            });
+        }
+    }, [myloading]);
+
+
 
 
     useEffect(() => {
@@ -74,7 +107,6 @@ const MemberInformation = () => {
 
 
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
     const formik = useFormik({
         initialValues: {
             usernumber: "",
@@ -83,22 +115,51 @@ const MemberInformation = () => {
             role: "",
         },
         onSubmit: (values) => {
-            // dispatch the action
-            const data = {
-                username: values?.username,
-                email: values?.email,
-                phone: values?.phone,
-                role: values?.role,
-            };
-            // dispatch(createPostAction(data));
-            console.log(data)
+            setUpdating(true)
+            axios({
+                method: "put",
+                url: Url + "/auth/UpdateEmployee",
+                data: {
+                    filter: {
+                        _id: editdata?._id,
+                    },
+                    Update: {
+                        UserNumber: values?.usernumber,
+                        UserEmail: values?.useremail,
+                        UserPassword: values?.userpassword,
+                        Role: values?.role,
+                    }
+                }
+            }).then((response) => {
+                console.log('Update successful', response.data);
+                onClose();
+                notify();
+
+                // Update data state with fetched data
+                setLoading(false);
+                axios({
+                    method: "post",
+                    url: Url + "/auth/filteredEmployee",
+                    data: {
+                        filter: {
+                            // "CreatedBy": id
+                        }
+                    }
+                }).then((res) => {
+                    setLoading(false)
+                    console.log("view member ====>", res?.data);
+                    setData(res?.data);
+                }).catch((err) => console.log(err?.message));
+
+            }).catch((error) => {
+                console.error('Update failed', error);
+            }).finally(() => {
+                setUpdating(false);
+            });
 
         },
         validationSchema: FormSchema,
     });
-
-    const initialRef = React.useRef(null)
-    const finalRef = React.useRef(null)
 
     // pagination handle function
 
@@ -111,6 +172,28 @@ const MemberInformation = () => {
         page * itemsPerPage
     );
 
+    const handleGetData = (data) => {
+        setEditData(data);
+        formik.setValues({
+            usernumber: data?.UserNumber || "",
+            useremail: data?.UserEmail || "",
+            userpassword: data?.UserPassword || "",
+            role: data?.Role || "",
+        });
+        onOpen();
+    }
+
+
+    const handleCloseModal = () => {
+        onClose();
+        formik.resetForm(); // Reset the form when the modal is closed
+    };
+
+    
+    const { isOpen, onOpen, onClose } = useDisclosure()
+  
+    const initialRef = React.useRef(null)
+    const finalRef = React.useRef(null)
 
     return (
         <div className={MemberStyle.container}>
@@ -148,7 +231,7 @@ const MemberInformation = () => {
                                                 <Td>{elm?.UserPassword}</Td>
                                                 <Td>{elm?.Role}</Td>
                                                 <Td onClick={onOpen}>
-                                                    <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} />
+                                                    <FiEdit style={{ cursor: 'pointer', margin: '0px 10px' }} onClick={() => handleGetData(elm)} />
                                                 </Td>
                                             </Tr>
                                         ))
@@ -163,7 +246,7 @@ const MemberInformation = () => {
                             initialFocusRef={initialRef}
                             finalFocusRef={finalRef}
                             isOpen={isOpen}
-                            onClose={onClose}
+                            onClose={handleCloseModal}
                         >
                             <ModalOverlay />
                             <ModalContent>
@@ -196,7 +279,7 @@ const MemberInformation = () => {
                                         <FormLabel>Role</FormLabel>
                                         <Select value={formik.values.role} name='role' id='role' onChange={formik.handleChange("role")} onBlur={formik.handleBlur("role")}>
                                             <option value='admin'>Admin</option>
-                                            <option value='cashier'>Cashier</option>
+                                            <option value='nurse'>Nurse</option>
                                             <option value='assistant'>Assistant</option>
                                         </Select>
                                     </FormControl>
