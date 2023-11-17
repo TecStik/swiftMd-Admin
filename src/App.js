@@ -19,10 +19,13 @@ import { StoreProvider } from './ContextApi';
 
 function App() {
   const [userData, setUserData] = useState(null);
-  console.log(userData)
+  const [clinicData, setClinicData] = useState(null);
+  const [patientData, setPatientData] = useState([]);
+
+  // console.log(clinicData)
   return (
     <ChakraProvider>
-      <StoreProvider value={{ userData, setUserData }}>
+      <StoreProvider value={{ userData, setUserData, clinicData, setClinicData, patientData, setPatientData }}>
         <Router>
           {
             userData ? <>

@@ -14,7 +14,7 @@
     color: #FFFFFF;
 }
 
-.formContainer form {
+.formContainer {
     display: flex;
     flex-direction: column;
     width: 40%;
@@ -46,7 +46,7 @@
     color: #fff !important;
 }
 
-.btnconfirm{
+.btnconfirm {
     width: 50%;
     background-color: #117692 !important;
     margin: auto;
@@ -84,8 +84,9 @@
 }
 
 
-.input{
+.input {
     padding: 0px 5px !important;
+    /* color: #fff !important; */
 }
 
 
@@ -100,3 +101,15 @@
     /* position: relative; */
     /* top: 20px; */
 }
+
+.viewContainer {
+    color: blue !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    background-color: lightblue;
+    border-radius: 50px;
+    text-align: center;
+    padding: 4px 20px;
+}
+
